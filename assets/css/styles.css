@@ -31,6 +31,25 @@
   --font-head: Georgia, "Times New Roman", "Segoe UI", serif;
 
   --header-h: 74px;
+
+  /* Minimum comfortable touch target (WCAG 2.5.8 / platform guidance). */
+  --tap: 44px;
+
+  /* Height of the fixed action bar shown at the bottom on phones. */
+  --fab-h: 60px;
+
+  /* Notch / home-indicator insets. These resolve to 0px unless the page
+     opts in with <meta name="viewport" ... viewport-fit=cover>. */
+  --safe-l: env(safe-area-inset-left, 0px);
+  --safe-r: env(safe-area-inset-right, 0px);
+  --safe-b: env(safe-area-inset-bottom, 0px);
+}
+
+/* A shorter sticky header on phones — 74px of permanently pinned chrome is
+   too much of a small viewport. Everything keyed off --header-h (scroll
+   padding, sticky offsets, menu height) follows automatically. */
+@media (max-width: 899px) {
+  :root { --header-h: 62px; }
 }
 
 /* --------------------------------------------------------------------------
@@ -54,7 +73,18 @@ body {
   font-size: 1rem;
   line-height: 1.7;
   -webkit-font-smoothing: antialiased;
+  /* Long unbreakable strings — email addresses, GSTINs, form names — must
+     wrap rather than push the layout sideways on a 360px screen. */
+  overflow-wrap: break-word;
+  -webkit-tap-highlight-color: rgba(201, 154, 59, .28);
 }
+
+/* Scroll lock while the mobile menu is open (toggled by main.js).
+   Locking on <html> rather than position-fixing <body> keeps the scroll
+   position intact and leaves the sticky header in place — the usual
+   `position: fixed` body trick breaks both. */
+html.nav-open,
+html.nav-open body { overflow: hidden; }
 
 img {
   max-width: 100%;
@@ -120,8 +150,28 @@ hr {
   width: 100%;
   max-width: var(--container);
   margin-inline: auto;
-  padding-inline: 20px;
+  /* max() keeps the gutter clear of a landscape notch without shrinking it
+     on ordinary devices, where the inset is 0px. */
+  padding-left: max(20px, var(--safe-l));
+  padding-right: max(20px, var(--safe-r));
 }
+
+@media (max-width: 400px) {
+  .container {
+    padding-left: max(16px, var(--safe-l));
+    padding-right: max(16px, var(--safe-r));
+  }
+}
+
+/* Grid and flex children default to min-width:auto, which lets long words
+   blow out the track instead of wrapping. Reset it everywhere we lay out. */
+.grid > *,
+.hero-grid > *,
+.content-layout > *,
+.contact-grid > *,
+.footer-grid > *,
+.cta-inner > *,
+.form-grid > * { min-width: 0; }
 
 .section { padding: clamp(2.75rem, 1.5rem + 4vw, 4.75rem) 0; }
 .section--tight { padding: clamp(2rem, 1.2rem + 2.5vw, 3rem) 0; }
@@ -198,10 +248,12 @@ hr {
   justify-content: center;
   gap: .5rem;
   padding: .8rem 1.5rem;
+  min-height: var(--tap);
   font-family: var(--font-body);
   font-size: .97rem;
   font-weight: 700;
   line-height: 1.2;
+  text-align: center;
   text-decoration: none;
   border: 2px solid transparent;
   border-radius: var(--radius);
@@ -254,6 +306,13 @@ hr {
   margin-top: 1.6rem;
 }
 
+/* On narrow phones two side-by-side buttons squeeze to unreadable widths.
+   Stack them full-bleed instead — easier to read and much easier to hit. */
+@media (max-width: 479px) {
+  .btn-row { gap: .6rem; }
+  .btn-row > .btn { width: 100%; }
+}
+
 /* --------------------------------------------------------------------------
    5. Utility bar + header
    -------------------------------------------------------------------------- */
@@ -285,7 +344,25 @@ hr {
   gap: .4rem;
 }
 .utility-bar a:hover { color: var(--gold); text-decoration: underline; }
-.utility-note { color: #a9b4c6; }
+.utility-note { color: #a9b4c6; margin: 0; }
+
+/* Phones: keep the utility bar to a single line so it does not eat the fold.
+   Nothing is lost — the hours sit in the footer, and the email is one tap
+   away in the fixed action bar and the footer. */
+@media (max-width: 767px) {
+  .utility-bar { font-size: .8rem; }
+  .utility-bar .container {
+    justify-content: center;
+    gap: .25rem 1rem;
+    min-height: 34px;
+  }
+  .utility-note { display: none; }
+  .utility-bar a { padding-block: .3rem; }
+}
+@media (max-width: 419px) {
+  /* At this width the email alone is wider than half the screen. */
+  .utility-links a[href^="mailto:"] { display: none; }
+}
 
 .site-header {
   position: sticky;
@@ -336,12 +413,15 @@ hr {
 .nav-toggle {
   display: none;
   align-items: center;
+  justify-content: center;
   gap: .5rem;
   background: var(--navy);
   color: #fff;
   border: 2px solid var(--navy);
   border-radius: var(--radius);
   padding: .55rem .85rem;
+  min-height: var(--tap);
+  min-width: var(--tap);
   font-weight: 700;
   font-size: .9rem;
   font-family: var(--font-body);
@@ -462,6 +542,12 @@ hr {
 @media (max-width: 899px) {
   .nav-toggle { display: inline-flex; }
 
+  /* Compact the brand so logo + name + Menu fit one line at 360px. */
+  .brand { gap: .55rem; }
+  .brand img { width: 40px; height: 40px; }
+  .brand-name { font-size: .92rem; }
+  .brand-tag { font-size: .6rem; letter-spacing: .1em; }
+
   .primary-nav {
     display: none;
     position: absolute;
@@ -475,9 +561,14 @@ hr {
     border-top: 1px solid var(--border);
     border-bottom: 3px solid var(--gold);
     box-shadow: var(--shadow-lg);
-    padding: 1rem 20px 1.35rem;
+    padding: 1rem max(20px, var(--safe-l)) calc(1.35rem + var(--safe-b)) max(20px, var(--safe-r));
+    /* dvh tracks the collapsing mobile browser chrome; the svh fallback keeps
+       older engines from overshooting the viewport. */
+    max-height: calc(100svh - var(--header-h));
     max-height: calc(100dvh - var(--header-h));
     overflow-y: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
   }
   .primary-nav.is-open { display: flex; }
 
@@ -485,7 +576,10 @@ hr {
   .nav-list > li { border-bottom: 1px solid var(--border); }
 
   .nav-link {
+    display: flex;
+    align-items: center;
     padding: .8rem .25rem;
+    min-height: var(--tap);
     font-size: 1rem;
     flex: 1;
     border-bottom: 0;
@@ -509,7 +603,12 @@ hr {
   .has-dropdown:hover > .dropdown,
   .has-dropdown:focus-within > .dropdown { display: none; }
   .dropdown.is-open { display: block; }
-  .dropdown a { padding: .65rem .75rem; }
+  .dropdown a {
+    display: flex;
+    align-items: center;
+    min-height: var(--tap);
+    padding: .6rem .75rem;
+  }
 
   .nav-cta { margin-top: .85rem; width: 100%; }
 }
@@ -537,7 +636,13 @@ hr {
   color: var(--gold-dark);
   font-weight: 700;
 }
-.breadcrumbs a { color: var(--muted); text-decoration: none; }
+.breadcrumbs a {
+  color: var(--muted);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  min-height: 32px;
+}
 .breadcrumbs a:hover { color: var(--gold-dark); text-decoration: underline; }
 .breadcrumbs [aria-current="page"] { color: var(--navy); font-weight: 600; }
 
@@ -579,6 +684,13 @@ hr {
   border-top: 5px solid var(--gold);
 }
 .hero-figure img { margin-inline: auto; width: 100%; max-width: 340px; height: auto; }
+
+/* Phones: the logo panel is decorative and sits between the H1 and the
+   call-to-action. Shrink it so the buttons stay within reach of the fold. */
+@media (max-width: 639px) {
+  .hero-figure { padding: 1rem; }
+  .hero-figure img { max-width: 190px; }
+}
 
 .hero-points {
   list-style: none;
@@ -751,6 +863,13 @@ hr {
 }
 .steps strong { display: block; margin-bottom: .15rem; }
 
+/* Narrow phones: a 3.6rem gutter leaves too little room for the text. Move
+   the number above the copy instead of beside it. */
+@media (max-width: 479px) {
+  .steps li { padding: 1rem 1.1rem; }
+  .steps li::before { position: static; margin-bottom: .6rem; }
+}
+
 .checklist {
   list-style: none;
   padding: 0;
@@ -784,7 +903,21 @@ hr {
 .callout h3 { margin-bottom: .4rem; font-size: 1.1rem; }
 .callout p { margin-bottom: 0; color: var(--muted); }
 
-.table-wrap { overflow-x: auto; margin: 1.5rem 0; }
+.table-wrap {
+  overflow-x: auto;
+  margin: 1.5rem 0;
+  -webkit-overflow-scrolling: touch;
+  /* Horizontal swipes stay in the table instead of triggering back-navigation. */
+  overscroll-behavior-x: contain;
+}
+.table-wrap:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
+.table-hint {
+  display: none;
+  font-size: .84rem;
+  color: var(--muted);
+  margin: -.6rem 0 1.5rem;
+}
+@media (max-width: 639px) { .table-hint { display: block; } }
 table {
   width: 100%;
   border-collapse: collapse;
@@ -822,8 +955,10 @@ tbody tr:last-child td { border-bottom: 0; }
 .side-list li { margin: 0; border-bottom: 1px solid var(--border); }
 .side-list li:last-child { border-bottom: 0; }
 .side-list a {
-  display: block;
-  padding: .6rem 0;
+  display: flex;
+  align-items: center;
+  min-height: var(--tap);
+  padding: .55rem 0;
   font-size: .93rem;
   font-weight: 600;
   text-decoration: none;
@@ -848,11 +983,16 @@ tbody tr:last-child td { border-bottom: 0; }
   list-style: none;
   cursor: pointer;
   padding: 1.05rem 3rem 1.05rem 1.25rem;
+  min-height: var(--tap);
   font-family: var(--font-head);
   font-weight: 700;
   font-size: 1.04rem;
   color: var(--navy);
   position: relative;
+}
+@media (max-width: 479px) {
+  .faq-item summary { font-size: .98rem; padding: .95rem 2.75rem .95rem 1rem; }
+  .faq-answer { padding: 0 1rem 1.1rem; }
 }
 .faq-item summary::-webkit-details-marker { display: none; }
 .faq-item summary::after {
@@ -928,13 +1068,26 @@ tbody tr:last-child td { border-bottom: 0; }
 .field select,
 .field textarea {
   font-family: var(--font-body);
+  /* Must stay at 16px or larger — iOS Safari auto-zooms into any smaller
+     field on focus, which throws the whole layout off. */
   font-size: 1rem;
   color: var(--navy);
   background: var(--cream);
   border: 1px solid var(--border);
   border-radius: 8px;
   padding: .7rem .85rem;
+  min-height: var(--tap);
   width: 100%;
+  max-width: 100%;
+  -webkit-appearance: none;
+  appearance: none;
+}
+/* Restore a visible dropdown affordance after removing the native styling. */
+.field select {
+  background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5 6 6.5l5-5' fill='none' stroke='%230a1f44' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right .9rem center;
+  padding-right: 2.4rem;
 }
 .field textarea { min-height: 140px; resize: vertical; }
 .field input:focus,
@@ -1016,6 +1169,7 @@ tbody tr:last-child td { border-bottom: 0; }
   line-height: 0;
 }
 .map-frame iframe { width: 100%; height: 380px; border: 0; display: block; }
+@media (max-width: 639px) { .map-frame iframe { height: 260px; } }
 
 /* --------------------------------------------------------------------------
    15. Blog
@@ -1105,7 +1259,19 @@ tbody tr:last-child td { border-bottom: 0; }
 }
 
 .footer-list { list-style: none; padding: 0; margin: 0; }
-.footer-list li { margin-bottom: .55rem; }
+.footer-list li { margin-bottom: .15rem; }
+/* Footer links were ~22px tall — below any usable touch target. */
+.footer-list a {
+  display: flex;
+  align-items: center;
+  min-height: var(--tap);
+  padding-block: .2rem;
+}
+.footer-contact a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 34px;
+}
 
 .footer-contact { list-style: none; padding: 0; margin: 0; display: grid; gap: .85rem; }
 .footer-contact li { margin: 0; }
@@ -1120,12 +1286,17 @@ tbody tr:last-child td { border-bottom: 0; }
 
 .footer-bottom {
   border-top: 1px solid rgba(255, 255, 255, .12);
-  padding: 1.15rem 0 5.5rem;
+  /* Clear the fixed action bar AND the iOS home indicator, derived from the
+     real bar height rather than a guessed magic number. */
+  padding: 1.15rem 0 calc(var(--fab-h) + var(--safe-b) + 1rem);
   font-size: .85rem;
   color: #98a3b5;
   text-align: center;
 }
-@media (min-width: 700px) { .footer-bottom { padding-bottom: 1.15rem; } }
+@media (min-width: 700px) {
+  /* The bar becomes a floating pill column at this width — no reserved space. */
+  .footer-bottom { padding-bottom: 1.15rem; }
+}
 
 /* --------------------------------------------------------------------------
    17. Floating action buttons
@@ -1140,6 +1311,10 @@ tbody tr:last-child td { border-bottom: 0; }
   background: var(--surface);
   border-top: 1px solid var(--border);
   box-shadow: 0 -4px 18px rgba(10, 22, 48, .12);
+  /* Sit above the iOS home indicator instead of underneath it. */
+  padding-bottom: var(--safe-b);
+  padding-left: var(--safe-l);
+  padding-right: var(--safe-r);
 }
 .fab {
   flex: 1;
@@ -1148,9 +1323,11 @@ tbody tr:last-child td { border-bottom: 0; }
   align-items: center;
   justify-content: center;
   gap: .15rem;
-  padding: .6rem .35rem;
+  padding: .5rem .35rem;
+  min-height: var(--fab-h);
   font-size: .75rem;
   font-weight: 700;
+  line-height: 1.25;
   text-decoration: none;
   color: var(--navy);
   border-right: 1px solid var(--border);
@@ -1178,6 +1355,8 @@ tbody tr:last-child td { border-bottom: 0; }
     flex: none;
     width: 52px;
     height: 52px;
+    min-height: 0;
+    padding: 0;
     border-radius: 50%;
     border-right: 0;
     background: var(--surface);

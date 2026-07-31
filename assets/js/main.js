@@ -23,6 +23,11 @@
     primaryNav.classList.toggle('is-open', open);
     var label = navToggle.querySelector('.nav-toggle-label');
     if (label) label.textContent = open ? 'Close' : 'Menu';
+
+    // Lock the page behind the open menu so a swipe scrolls the menu rather
+    // than the article underneath it. The lock only applies at mobile widths,
+    // where the menu is an overlay; on desktop the nav is always visible.
+    document.documentElement.classList.toggle('nav-open', open && MOBILE_QUERY.matches);
   }
 
   if (navToggle && primaryNav) {
