@@ -1,0 +1,8 @@
+# robots.txt — M/S Alok S Kumar And Company
+# Chartered Accountants, Rohini, Delhi
+# https://www.alokskumar.com/
+
+User-agent: *
+Allow: /
+
+Sitemap: https://www.alokskumar.com/sitemap.xml

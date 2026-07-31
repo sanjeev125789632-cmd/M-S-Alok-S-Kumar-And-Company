@@ -1,0 +1,159 @@
+# ==========================================================================
+# M/S Alok S Kumar And Company — Apache configuration
+# Canonical origin: https://www.alokskumar.com  (HTTPS + www)
+# Upload this file to the web root alongside index.html.
+# Requires mod_rewrite, mod_headers, mod_deflate and mod_expires.
+# ==========================================================================
+
+# --------------------------------------------------------------------------
+# 0. Directory index + no directory listings
+# --------------------------------------------------------------------------
+DirectoryIndex index.html
+Options -Indexes
+
+# --------------------------------------------------------------------------
+# 1. Custom error page
+# --------------------------------------------------------------------------
+ErrorDocument 404 /404.html
+
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteBase /
+
+# ------------------------------------------------------------------------
+# 2. Force HTTPS
+#    (If the host terminates TLS at a proxy/CDN, the X-Forwarded-Proto rule
+#     below is the one that fires; keep both.)
+# ------------------------------------------------------------------------
+RewriteCond %{HTTPS} !=on
+RewriteCond %{HTTP:X-Forwarded-Proto} !https
+RewriteRule ^(.*)$ https://www.alokskumar.com/$1 [R=301,L]
+
+# ------------------------------------------------------------------------
+# 3. Force www (canonical is https://www.alokskumar.com)
+#    Redirects alokskumar.com -> www.alokskumar.com, and also retires the
+#    old alokskumarandco.com domain if it still resolves here.
+# ------------------------------------------------------------------------
+RewriteCond %{HTTP_HOST} !^www\.alokskumar\.com$ [NC]
+RewriteRule ^(.*)$ https://www.alokskumar.com/$1 [R=301,L]
+
+# ------------------------------------------------------------------------
+# 4. Clean URLs — serve /path/ from /path/index.html
+#    Also add the trailing slash when a real directory is requested without
+#    one, so /services resolves to /services/ (matching the canonical).
+# ------------------------------------------------------------------------
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteCond %{REQUEST_URI} !/$
+RewriteRule ^(.*)$ /$1/ [R=301,L]
+
+# Strip a .html extension if anyone links to /about.html style URLs
+RewriteCond %{THE_REQUEST} \s/+(.+?)/?index\.html[\s?] [NC]
+RewriteRule ^ /%1/ [R=301,L]
+
+RewriteCond %{THE_REQUEST} \s/+(.+?)\.html[\s?] [NC]
+RewriteRule ^ /%1/ [R=301,L]
+
+# ------------------------------------------------------------------------
+# 5. 301s from the old single-page site
+#    The previous site was one page with #hash anchors. A server cannot see
+#    the fragment (browsers never send it), so hash-only links such as
+#    /#services cannot be redirected server-side — that is handled by the
+#    JS snippet noted at the bottom of this file. What we CAN redirect are
+#    the query-string and path forms that were also in circulation.
+# ------------------------------------------------------------------------
+RedirectMatch 301 ^/index\.html$ /
+RedirectMatch 301 ^/home/?$ /
+RedirectMatch 301 ^/about-us/?$ /about/
+RedirectMatch 301 ^/aboutus/?$ /about/
+RedirectMatch 301 ^/contact-us/?$ /contact/
+RedirectMatch 301 ^/contactus/?$ /contact/
+RedirectMatch 301 ^/our-services/?$ /services/
+RedirectMatch 301 ^/service/?$ /services/
+RedirectMatch 301 ^/gst/?$ /services/gst/
+RedirectMatch 301 ^/gst-services/?$ /services/gst/
+RedirectMatch 301 ^/income-tax/?$ /services/income-tax/
+RedirectMatch 301 ^/company-information/?$ /services/company-registration/
+RedirectMatch 301 ^/company-registration/?$ /services/company-registration/
+RedirectMatch 301 ^/registration-of-trust/?$ /services/trust-registration/
+RedirectMatch 301 ^/trust-registration/?$ /services/trust-registration/
+RedirectMatch 301 ^/investment-advisory/?$ /services/investment-advisory/
+RedirectMatch 301 ^/drafting-of-deeds/?$ /services/deed-drafting/
+RedirectMatch 301 ^/deed-drafting/?$ /services/deed-drafting/
+RedirectMatch 301 ^/accounting-assurance-services/?$ /services/accounting-assurance/
+RedirectMatch 301 ^/accounting/?$ /services/accounting-assurance/
+RedirectMatch 301 ^/faq/?$ /
+RedirectMatch 301 ^/resources/?$ /blog/
+</IfModule>
+
+# --------------------------------------------------------------------------
+# 6. Security headers
+# --------------------------------------------------------------------------
+<IfModule mod_headers.c>
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set X-Frame-Options "SAMEORIGIN"
+  Header always set Permissions-Policy "geolocation=(), microphone=(), camera=()"
+  # Enable HSTS only once you are certain HTTPS works on every subdomain:
+  # Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains"
+</IfModule>
+
+# --------------------------------------------------------------------------
+# 7. Compression
+# --------------------------------------------------------------------------
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/plain text/css text/xml
+  AddOutputFilterByType DEFLATE application/javascript application/json
+  AddOutputFilterByType DEFLATE application/xml application/rss+xml
+  AddOutputFilterByType DEFLATE image/svg+xml
+</IfModule>
+
+# --------------------------------------------------------------------------
+# 8. Caching
+# --------------------------------------------------------------------------
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresByType text/css                "access plus 1 year"
+  ExpiresByType application/javascript  "access plus 1 year"
+  ExpiresByType image/jpeg              "access plus 1 year"
+  ExpiresByType image/png               "access plus 1 year"
+  ExpiresByType image/svg+xml           "access plus 1 year"
+  ExpiresByType image/webp              "access plus 1 year"
+  ExpiresByType text/html               "access plus 0 seconds"
+  ExpiresByType application/xml         "access plus 1 day"
+</IfModule>
+
+# --------------------------------------------------------------------------
+# 9. Correct MIME types
+# --------------------------------------------------------------------------
+<IfModule mod_mime.c>
+  AddType text/css                  .css
+  AddType application/javascript    .js
+  AddType image/svg+xml             .svg
+  AddType application/xml           .xml
+  AddCharset UTF-8 .html .css .js .xml .txt
+</IfModule>
+
+# ==========================================================================
+# NOTE ON OLD HASH ANCHORS (#services, #contact, #faq …)
+# A browser never sends the fragment to the server, so those cannot be
+# redirected here. If you want inbound links such as
+# https://www.alokskumar.com/#services to land on the new page, add this to
+# the bottom of /assets/js/main.js:
+#
+#   var HASH_MAP = {
+#     '#services': '/services/', '#service': '/services/',
+#     '#about': '/about/', '#contact': '/contact/', '#faq': '/',
+#     '#gst': '/services/gst/', '#income-tax': '/services/income-tax/',
+#     '#company': '/services/company-registration/',
+#     '#trust': '/services/trust-registration/',
+#     '#investment': '/services/investment-advisory/',
+#     '#deeds': '/services/deed-drafting/',
+#     '#accounting': '/services/accounting-assurance/'
+#   };
+#   if (location.pathname === '/' && HASH_MAP[location.hash]) {
+#     location.replace(HASH_MAP[location.hash]);
+#   }
+#
+# This is a client-side redirect, so it passes no link equity — it is a
+# usability nicety only. The server-side 301s above are what matter for SEO.
+# ==========================================================================

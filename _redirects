@@ -1,0 +1,47 @@
+# ==========================================================================
+# Netlify _redirects — M/S Alok S Kumar And Company
+# Canonical origin: https://www.alokskumar.com  (HTTPS + www)
+#
+# Use EITHER this file OR netlify.toml — do not maintain both. If both are
+# present, netlify.toml rules are evaluated first.
+#
+# Netlify already serves /path/index.html for /path/ (Pretty URLs) and forces
+# HTTPS once the certificate is issued, so neither needs a rule here.
+# For non-www -> www, set www.alokskumar.com as the PRIMARY domain in
+# Domain management; Netlify then 301s the apex automatically. The host rules
+# below are a fallback for old domains still pointing at this site.
+#
+# Format:  from   to   status[!]     ("!" = force, overrides an existing file)
+# ==========================================================================
+
+# --- Host canonicalisation -----------------------------------------------
+https://alokskumar.com/*            https://www.alokskumar.com/:splat        301!
+https://alokskumarandco.com/*       https://www.alokskumar.com/:splat        301!
+https://www.alokskumarandco.com/*   https://www.alokskumar.com/:splat        301!
+
+# --- Legacy paths from the old single-page site --------------------------
+/index.html                         /                                        301
+/home                               /                                        301
+/about-us                           /about/                                  301
+/aboutus                            /about/                                  301
+/contact-us                         /contact/                                301
+/contactus                          /contact/                                301
+/our-services                       /services/                               301
+/service                            /services/                               301
+/gst                                /services/gst/                           301
+/gst-services                       /services/gst/                           301
+/income-tax                         /services/income-tax/                    301
+/company-information                /services/company-registration/          301
+/company-registration               /services/company-registration/          301
+/registration-of-trust              /services/trust-registration/            301
+/trust-registration                 /services/trust-registration/            301
+/investment-advisory                /services/investment-advisory/           301
+/drafting-of-deeds                  /services/deed-drafting/                 301
+/deed-drafting                      /services/deed-drafting/                 301
+/accounting-assurance-services      /services/accounting-assurance/          301
+/accounting                         /services/accounting-assurance/          301
+/resources                          /blog/                                   301
+/faq                                /                                        301
+
+# --- Catch-all 404 — MUST be last ----------------------------------------
+/*                                  /404.html                                404

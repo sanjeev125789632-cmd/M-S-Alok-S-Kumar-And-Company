@@ -1,0 +1,167 @@
+# ==========================================================================
+# Netlify configuration — M/S Alok S Kumar And Company
+# Canonical origin: https://www.alokskumar.com  (HTTPS + www)
+#
+# Use this file OR the plain-text `_redirects` file, not both — if both are
+# present, rules in netlify.toml are evaluated before those in _redirects.
+# Netlify serves /path/index.html for /path/ automatically ("Pretty URLs"),
+# so no rewrite rule is needed for clean URLs. HTTPS is forced automatically
+# once the certificate is provisioned.
+#
+# For non-www -> www: in the Netlify UI set www.alokskumar.com as the
+# PRIMARY domain under Domain management. Netlify then 301s the apex domain
+# to www for you — that is the supported way to do it and is preferred over
+# a manual rule.
+# ==========================================================================
+
+[build]
+  publish = "."
+
+# --------------------------------------------------------------------------
+# Belt-and-braces host canonicalisation (only fires if the UI primary-domain
+# redirect is not in effect, e.g. when an old domain still points here).
+# --------------------------------------------------------------------------
+[[redirects]]
+  from = "https://alokskumar.com/*"
+  to = "https://www.alokskumar.com/:splat"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "https://alokskumarandco.com/*"
+  to = "https://www.alokskumar.com/:splat"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "https://www.alokskumarandco.com/*"
+  to = "https://www.alokskumar.com/:splat"
+  status = 301
+  force = true
+
+# --------------------------------------------------------------------------
+# Legacy paths from the old single-page site
+# --------------------------------------------------------------------------
+[[redirects]]
+  from = "/index.html"
+  to = "/"
+  status = 301
+
+[[redirects]]
+  from = "/home"
+  to = "/"
+  status = 301
+
+[[redirects]]
+  from = "/about-us"
+  to = "/about/"
+  status = 301
+
+[[redirects]]
+  from = "/contact-us"
+  to = "/contact/"
+  status = 301
+
+[[redirects]]
+  from = "/our-services"
+  to = "/services/"
+  status = 301
+
+[[redirects]]
+  from = "/gst"
+  to = "/services/gst/"
+  status = 301
+
+[[redirects]]
+  from = "/gst-services"
+  to = "/services/gst/"
+  status = 301
+
+[[redirects]]
+  from = "/income-tax"
+  to = "/services/income-tax/"
+  status = 301
+
+[[redirects]]
+  from = "/company-information"
+  to = "/services/company-registration/"
+  status = 301
+
+[[redirects]]
+  from = "/company-registration"
+  to = "/services/company-registration/"
+  status = 301
+
+[[redirects]]
+  from = "/registration-of-trust"
+  to = "/services/trust-registration/"
+  status = 301
+
+[[redirects]]
+  from = "/trust-registration"
+  to = "/services/trust-registration/"
+  status = 301
+
+[[redirects]]
+  from = "/investment-advisory"
+  to = "/services/investment-advisory/"
+  status = 301
+
+[[redirects]]
+  from = "/drafting-of-deeds"
+  to = "/services/deed-drafting/"
+  status = 301
+
+[[redirects]]
+  from = "/deed-drafting"
+  to = "/services/deed-drafting/"
+  status = 301
+
+[[redirects]]
+  from = "/accounting-assurance-services"
+  to = "/services/accounting-assurance/"
+  status = 301
+
+[[redirects]]
+  from = "/accounting"
+  to = "/services/accounting-assurance/"
+  status = 301
+
+[[redirects]]
+  from = "/resources"
+  to = "/blog/"
+  status = 301
+
+[[redirects]]
+  from = "/faq"
+  to = "/"
+  status = 301
+
+# --------------------------------------------------------------------------
+# Catch-all 404 — MUST be the last redirect rule.
+# --------------------------------------------------------------------------
+[[redirects]]
+  from = "/*"
+  to = "/404.html"
+  status = 404
+
+# --------------------------------------------------------------------------
+# Headers
+# --------------------------------------------------------------------------
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    X-Frame-Options = "SAMEORIGIN"
+    Permissions-Policy = "geolocation=(), microphone=(), camera=()"
+
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/*.html"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
