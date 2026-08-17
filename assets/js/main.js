@@ -215,7 +215,7 @@
       return;
     }
 
-    setStatus('Sending your enquiry…', 'success');
+    setStatus('Submitted', 'success');
   });
 
   // Success message after a redirect back with ?sent=1
