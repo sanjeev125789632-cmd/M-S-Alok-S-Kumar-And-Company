@@ -191,30 +191,6 @@
       return;
     }
 
-    // ------------------------------------------------------------------
-    // WIRE YOUR ENDPOINT HERE.
-    // The form's `action` attribute (see contact/index.html) is currently a
-    // placeholder. Replace it with one of the following, then this handler
-    // needs no change — the browser performs a normal POST:
-    //
-    //   Formspree  : action="https://formspree.io/f/XXXXXXXX"  method="post"
-    //   Netlify    : add  data-netlify="true"  netlify-honeypot="company"
-    //                and keep action="/contact/?sent=1"
-    //   Web3Forms  : action="https://api.web3forms.com/submit" + hidden access_key
-    //
-    // If the action is still the placeholder we block the POST so no data is
-    // silently lost, and tell the visitor to call or WhatsApp instead.
-    // ------------------------------------------------------------------
-    var action = form.getAttribute('action') || '';
-    if (action.indexOf('REPLACE-WITH-YOUR-FORM-ENDPOINT') !== -1) {
-      event.preventDefault();
-      setStatus(
-        'This form is not connected to an email endpoint yet. Please call +91 97173 55259 or email ask.ca.audit@gmail.com — we reply the same working day.',
-        'error'
-      );
-      return;
-    }
-
     setStatus('Submitted', 'success');
   });
 

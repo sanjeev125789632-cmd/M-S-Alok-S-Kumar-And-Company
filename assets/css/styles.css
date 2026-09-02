@@ -11,7 +11,7 @@
   --navy-deep: #0a1630;
   --gold: #c99a3b;
   --gold-dark: #a97e2c;
-  --cream: #faf8f4;
+  --cream: #f7f5ef;
   --surface: #ffffff;
   --muted: #5b6472;
   --border: #e7e2d8;
@@ -20,8 +20,8 @@
   --gold-soft: rgba(201, 154, 59, 0.12);
 
   --container: 1140px;
-  --radius: 10px;
-  --radius-lg: 16px;
+  --radius: 3px;
+  --radius-lg: 4px;
 
   --shadow-sm: 0 1px 2px rgba(10, 22, 48, 0.06);
   --shadow: 0 6px 20px rgba(10, 22, 48, 0.08);
@@ -650,9 +650,8 @@ hr {
    7. Hero
    -------------------------------------------------------------------------- */
 .hero {
-  background:
-    radial-gradient(1000px 520px at 82% 6%, rgba(201, 154, 59, .16), transparent 62%),
-    linear-gradient(160deg, var(--navy) 0%, var(--navy-deep) 100%);
+  background: var(--navy-deep);
+  border-bottom: 6px solid var(--gold);
   color: #ffffff;
   padding: clamp(2.75rem, 1.5rem + 5vw, 5.25rem) 0;
 }
@@ -670,7 +669,7 @@ hr {
   margin-top: 1.4rem;
   padding: .45rem .95rem;
   border: 1px solid rgba(201, 154, 59, .55);
-  border-radius: 999px;
+  border-radius: 0;
   font-size: .85rem;
   font-weight: 600;
   color: var(--gold);
@@ -680,8 +679,8 @@ hr {
   background: var(--surface);
   border-radius: var(--radius-lg);
   padding: clamp(1.1rem, .6rem + 2vw, 2rem);
-  box-shadow: var(--shadow-lg);
-  border-top: 5px solid var(--gold);
+  box-shadow: none;
+  border: 1px solid rgba(201, 154, 59, .65);
 }
 .hero-figure img { margin-inline: auto; width: 100%; max-width: 340px; height: auto; }
 
@@ -720,9 +719,8 @@ hr {
 
 /* Inner page header (non-home) */
 .page-hero {
-  background:
-    radial-gradient(760px 400px at 88% 0%, rgba(201, 154, 59, .15), transparent 60%),
-    linear-gradient(160deg, var(--navy) 0%, var(--navy-deep) 100%);
+  background: var(--navy-deep);
+  border-bottom: 4px solid var(--gold);
   color: #ffffff;
   padding: clamp(2.25rem, 1.4rem + 3.5vw, 3.75rem) 0;
 }
@@ -751,8 +749,8 @@ hr {
   border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: 1.5rem;
-  box-shadow: var(--shadow-sm);
-  transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+  box-shadow: none;
+  transition: border-color .2s ease, background-color .2s ease;
   display: flex;
   flex-direction: column;
 }
@@ -762,8 +760,7 @@ hr {
 .card-link { text-decoration: none; color: inherit; }
 .card-link:hover,
 .card-link:focus-visible {
-  transform: translateY(-3px);
-  box-shadow: var(--shadow);
+  background: #fcfbf8;
   border-color: var(--gold);
 }
 .card-link:hover h3 { color: var(--gold-dark); }
@@ -773,7 +770,7 @@ hr {
   height: 44px;
   display: grid;
   place-items: center;
-  border-radius: 9px;
+  border-radius: 0;
   background: var(--gold-soft);
   color: var(--gold-dark);
   font-family: var(--font-head);
@@ -943,7 +940,7 @@ tbody tr:last-child td { border-bottom: 0; }
   border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: 1.4rem;
-  box-shadow: var(--shadow-sm);
+  box-shadow: none;
 }
 .side-card h2, .side-card h3 { font-size: 1.1rem; margin-bottom: .75rem; }
 .side-card p { font-size: .93rem; color: var(--muted); }
@@ -1022,11 +1019,37 @@ tbody tr:last-child td { border-bottom: 0; }
    12. CTA band
    -------------------------------------------------------------------------- */
 .cta-band {
-  background:
-    radial-gradient(700px 340px at 15% 100%, rgba(201, 154, 59, .18), transparent 60%),
-    linear-gradient(160deg, var(--navy) 0%, var(--navy-deep) 100%);
+  background: var(--navy-deep);
+  border-top: 1px solid var(--gold);
   color: #fff;
   padding: clamp(2.5rem, 1.5rem + 3.5vw, 4rem) 0;
+}
+
+.practice-record {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-top: 4px solid var(--gold);
+  padding: clamp(1.25rem, 1rem + 1vw, 2rem);
+}
+.practice-record__label {
+  color: var(--gold-dark);
+  font-size: .78rem;
+  font-weight: 700;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
+.practice-record dl { margin: 0; }
+.practice-record dl > div {
+  display: grid;
+  grid-template-columns: minmax(8rem, .8fr) 1.2fr;
+  gap: 1rem;
+  padding: .9rem 0;
+  border-top: 1px solid var(--border);
+}
+.practice-record dt { color: var(--muted); }
+.practice-record dd { margin: 0; font-weight: 700; }
+@media (max-width: 479px) {
+  .practice-record dl > div { grid-template-columns: 1fr; gap: .15rem; }
 }
 .cta-band h2 { color: #fff; }
 .cta-band p { color: #d3dae7; max-width: 640px; }
