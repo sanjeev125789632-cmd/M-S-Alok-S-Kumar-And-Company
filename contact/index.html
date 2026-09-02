@@ -194,19 +194,7 @@
           <span class="rule" aria-hidden="true"></span>
           <p class="muted">Tell us briefly what you need. We respond within one working day with the scope, the documents required and an upfront fee quote.</p>
 
-          <!--
-            FORM ENDPOINT — REPLACE BEFORE GOING LIVE.
-            The action below is a deliberate placeholder; main.js blocks submission
-            while it is still in place so no enquiry is silently lost.
-
-            Formspree      : action="https://formspree.io/f/YOUR_FORM_ID"  method="post"
-            Netlify Forms  : keep action="/contact/?sent=1" and add to <form>:
-                             data-netlify="true" netlify-honeypot="company"
-            Web3Forms      : action="https://api.web3forms.com/submit" plus
-                             <input type="hidden" name="access_key" value="YOUR_KEY">
-            Any of the above will POST these field names:
-            name, email, phone, service, message, _subject (+ company honeypot)
-          -->
+          <!-- Web3Forms receives the enquiry; the honeypot below filters automated submissions. -->
           <form id="enquiry-form"
                 class="form-grid"
                         action="https://api.web3forms.com/submit"
