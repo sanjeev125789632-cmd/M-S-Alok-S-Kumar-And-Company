@@ -91,4 +91,14 @@
     <priority>0.6</priority>
   </url>
 
+  <url>
+    <loc>https://www.alokskumar.com/ca-in-rohini/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.alokskumar.com/ca-in-chandni-chowk/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
 </urlset>
