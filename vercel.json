@@ -1,0 +1,300 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "trailingSlash": true,
+  "redirects": [
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "alokskumar.com"
+        }
+      ],
+      "destination": "https://www.alokskumar.com/:path*",
+      "statusCode": 301
+    },
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "alokskumarandco.com"
+        }
+      ],
+      "destination": "https://www.alokskumar.com/:path*",
+      "statusCode": 301
+    },
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.alokskumarandco.com"
+        }
+      ],
+      "destination": "https://www.alokskumar.com/:path*",
+      "statusCode": 301
+    },
+    {
+      "source": "/index.html",
+      "destination": "/",
+      "statusCode": 301
+    },
+    {
+      "source": "/home",
+      "destination": "/",
+      "statusCode": 301
+    },
+    {
+      "source": "/home/",
+      "destination": "/",
+      "statusCode": 301
+    },
+    {
+      "source": "/about-us",
+      "destination": "/about/",
+      "statusCode": 301
+    },
+    {
+      "source": "/about-us/",
+      "destination": "/about/",
+      "statusCode": 301
+    },
+    {
+      "source": "/aboutus",
+      "destination": "/about/",
+      "statusCode": 301
+    },
+    {
+      "source": "/aboutus/",
+      "destination": "/about/",
+      "statusCode": 301
+    },
+    {
+      "source": "/contact-us",
+      "destination": "/contact/",
+      "statusCode": 301
+    },
+    {
+      "source": "/contact-us/",
+      "destination": "/contact/",
+      "statusCode": 301
+    },
+    {
+      "source": "/contactus",
+      "destination": "/contact/",
+      "statusCode": 301
+    },
+    {
+      "source": "/contactus/",
+      "destination": "/contact/",
+      "statusCode": 301
+    },
+    {
+      "source": "/our-services",
+      "destination": "/services/",
+      "statusCode": 301
+    },
+    {
+      "source": "/our-services/",
+      "destination": "/services/",
+      "statusCode": 301
+    },
+    {
+      "source": "/service",
+      "destination": "/services/",
+      "statusCode": 301
+    },
+    {
+      "source": "/service/",
+      "destination": "/services/",
+      "statusCode": 301
+    },
+    {
+      "source": "/gst",
+      "destination": "/services/gst/",
+      "statusCode": 301
+    },
+    {
+      "source": "/gst/",
+      "destination": "/services/gst/",
+      "statusCode": 301
+    },
+    {
+      "source": "/gst-services",
+      "destination": "/services/gst/",
+      "statusCode": 301
+    },
+    {
+      "source": "/gst-services/",
+      "destination": "/services/gst/",
+      "statusCode": 301
+    },
+    {
+      "source": "/income-tax",
+      "destination": "/services/income-tax/",
+      "statusCode": 301
+    },
+    {
+      "source": "/income-tax/",
+      "destination": "/services/income-tax/",
+      "statusCode": 301
+    },
+    {
+      "source": "/company-information",
+      "destination": "/services/company-registration/",
+      "statusCode": 301
+    },
+    {
+      "source": "/company-information/",
+      "destination": "/services/company-registration/",
+      "statusCode": 301
+    },
+    {
+      "source": "/company-registration",
+      "destination": "/services/company-registration/",
+      "statusCode": 301
+    },
+    {
+      "source": "/company-registration/",
+      "destination": "/services/company-registration/",
+      "statusCode": 301
+    },
+    {
+      "source": "/registration-of-trust",
+      "destination": "/services/trust-registration/",
+      "statusCode": 301
+    },
+    {
+      "source": "/registration-of-trust/",
+      "destination": "/services/trust-registration/",
+      "statusCode": 301
+    },
+    {
+      "source": "/trust-registration",
+      "destination": "/services/trust-registration/",
+      "statusCode": 301
+    },
+    {
+      "source": "/trust-registration/",
+      "destination": "/services/trust-registration/",
+      "statusCode": 301
+    },
+    {
+      "source": "/investment-advisory",
+      "destination": "/services/investment-advisory/",
+      "statusCode": 301
+    },
+    {
+      "source": "/investment-advisory/",
+      "destination": "/services/investment-advisory/",
+      "statusCode": 301
+    },
+    {
+      "source": "/drafting-of-deeds",
+      "destination": "/services/deed-drafting/",
+      "statusCode": 301
+    },
+    {
+      "source": "/drafting-of-deeds/",
+      "destination": "/services/deed-drafting/",
+      "statusCode": 301
+    },
+    {
+      "source": "/deed-drafting",
+      "destination": "/services/deed-drafting/",
+      "statusCode": 301
+    },
+    {
+      "source": "/deed-drafting/",
+      "destination": "/services/deed-drafting/",
+      "statusCode": 301
+    },
+    {
+      "source": "/accounting-assurance-services",
+      "destination": "/services/accounting-assurance/",
+      "statusCode": 301
+    },
+    {
+      "source": "/accounting-assurance-services/",
+      "destination": "/services/accounting-assurance/",
+      "statusCode": 301
+    },
+    {
+      "source": "/accounting",
+      "destination": "/services/accounting-assurance/",
+      "statusCode": 301
+    },
+    {
+      "source": "/accounting/",
+      "destination": "/services/accounting-assurance/",
+      "statusCode": 301
+    },
+    {
+      "source": "/resources",
+      "destination": "/blog/",
+      "statusCode": 301
+    },
+    {
+      "source": "/resources/",
+      "destination": "/blog/",
+      "statusCode": 301
+    },
+    {
+      "source": "/faq",
+      "destination": "/",
+      "statusCode": 301
+    },
+    {
+      "source": "/faq/",
+      "destination": "/",
+      "statusCode": 301
+    },
+    {
+      "source": "/blog/gst-return-filing-guide-delhi",
+      "destination": "/services/gst/",
+      "statusCode": 301
+    },
+    {
+      "source": "/blog/gst-return-filing-guide-delhi/",
+      "destination": "/services/gst/",
+      "statusCode": 301
+    }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "SAMEORIGIN"
+        },
+        {
+          "key": "Permissions-Policy",
+          "value": "geolocation=(), microphone=(), camera=()"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        }
+      ]
+    },
+    {
+      "source": "/assets/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    }
+  ]
+}

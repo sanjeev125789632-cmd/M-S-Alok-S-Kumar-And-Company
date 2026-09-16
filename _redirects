@@ -1,3 +1,7 @@
+# INACTIVE: this site deploys on Vercel, which does not read _redirects
+# (it is a Netlify format). Redirects live in vercel.json.
+# Any change made here has no effect on the live site.
+
 # ==========================================================================
 # Netlify _redirects — M/S Alok S Kumar And Company
 # Canonical origin: https://www.alokskumar.com  (HTTPS + www)
@@ -42,6 +46,11 @@ https://www.alokskumarandco.com/*   https://www.alokskumar.com/:splat        301
 /accounting                         /services/accounting-assurance/          301
 /resources                          /blog/                                   301
 /faq                                /                                        301
+
+# --- Consolidated content ------------------------------------------------
+# GST return filing guide merged into the GST service page
+/blog/gst-return-filing-guide-delhi   /services/gst/                           301
+/blog/gst-return-filing-guide-delhi/* /services/gst/                           301
 
 # --- Catch-all 404 — MUST be last ----------------------------------------
 /*                                  /404.html                                404

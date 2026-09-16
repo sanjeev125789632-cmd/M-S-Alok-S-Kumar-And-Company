@@ -1,3 +1,7 @@
+# INACTIVE: this site deploys on Vercel, which does not read netlify.toml.
+# Redirects and headers live in vercel.json. Kept only for reference.
+# Any change made here has no effect on the live site.
+
 # ==========================================================================
 # Netlify configuration — M/S Alok S Kumar And Company
 # Canonical origin: https://www.alokskumar.com  (HTTPS + www)
@@ -140,6 +144,21 @@
 # --------------------------------------------------------------------------
 # Catch-all 404 — MUST be the last redirect rule.
 # --------------------------------------------------------------------------
+# --------------------------------------------------------------------------
+# Consolidated content
+# --------------------------------------------------------------------------
+# The GST return filing guide was merged into the GST service page, which now
+# covers registration and the return cycle in one place.
+[[redirects]]
+  from = "/blog/gst-return-filing-guide-delhi"
+  to = "/services/gst/"
+  status = 301
+
+[[redirects]]
+  from = "/blog/gst-return-filing-guide-delhi/*"
+  to = "/services/gst/"
+  status = 301
+
 [[redirects]]
   from = "/*"
   to = "/404.html"
