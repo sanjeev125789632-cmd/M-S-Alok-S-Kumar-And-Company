@@ -67,6 +67,9 @@ RedirectMatch 301 ^/about-us/?$ /about/
 RedirectMatch 301 ^/aboutus/?$ /about/
 RedirectMatch 301 ^/contact-us/?$ /contact/
 RedirectMatch 301 ^/contactus/?$ /contact/
+
+# GST return filing guide merged into the GST service page
+RedirectMatch 301 ^/blog/gst-return-filing-guide-delhi(/.*)?$ /services/gst/
 RedirectMatch 301 ^/our-services/?$ /services/
 RedirectMatch 301 ^/service/?$ /services/
 RedirectMatch 301 ^/gst/?$ /services/gst/

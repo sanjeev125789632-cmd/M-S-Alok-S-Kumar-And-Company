@@ -43,5 +43,10 @@ https://www.alokskumarandco.com/*   https://www.alokskumar.com/:splat        301
 /resources                          /blog/                                   301
 /faq                                /                                        301
 
+# --- Consolidated content ------------------------------------------------
+# GST return filing guide merged into the GST service page
+/blog/gst-return-filing-guide-delhi   /services/gst/                           301
+/blog/gst-return-filing-guide-delhi/* /services/gst/                           301
+
 # --- Catch-all 404 — MUST be last ----------------------------------------
 /*                                  /404.html                                404

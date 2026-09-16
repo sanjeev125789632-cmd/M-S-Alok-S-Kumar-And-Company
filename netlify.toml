@@ -140,6 +140,21 @@
 # --------------------------------------------------------------------------
 # Catch-all 404 — MUST be the last redirect rule.
 # --------------------------------------------------------------------------
+# --------------------------------------------------------------------------
+# Consolidated content
+# --------------------------------------------------------------------------
+# The GST return filing guide was merged into the GST service page, which now
+# covers registration and the return cycle in one place.
+[[redirects]]
+  from = "/blog/gst-return-filing-guide-delhi"
+  to = "/services/gst/"
+  status = 301
+
+[[redirects]]
+  from = "/blog/gst-return-filing-guide-delhi/*"
+  to = "/services/gst/"
+  status = 301
+
 [[redirects]]
   from = "/*"
   to = "/404.html"
