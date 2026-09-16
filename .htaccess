@@ -1,3 +1,8 @@
+# INACTIVE: this site deploys on Vercel, which does not read .htaccess
+# (it is an Apache format, and Vercel does not run Apache).
+# Redirects and headers live in vercel.json.
+# Any change made here has no effect on the live site.
+
 # ==========================================================================
 # M/S Alok S Kumar And Company — Apache configuration
 # Canonical origin: https://www.alokskumar.com  (HTTPS + www)
